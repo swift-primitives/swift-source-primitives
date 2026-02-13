@@ -51,14 +51,14 @@ extension Source.Manager.LineMap {
             let byte = content[index]
             if byte == 0x0A {
                 // LF
-                starts.append(Text.Position(index + 1))
+                starts.append(Text.Position(__unchecked: (), Ordinal(UInt(index + 1))))
             } else if byte == 0x0D {
                 // CR or CRLF
                 if index + 1 < count && content[index + 1] == 0x0A {
                     // CRLF — skip the LF
                     index += 1
                 }
-                starts.append(Text.Position(index + 1))
+                starts.append(Text.Position(__unchecked: (), Ordinal(UInt(index + 1))))
             }
             index += 1
         }
@@ -101,7 +101,9 @@ extension Source.Manager.LineMap {
     public func column(for offset: Text.Position) -> Int {
         let lineIndex = line(containing: offset) - 1
         let lineStart = lineStarts[lineIndex]
-        return Int(offset - lineStart) + 1
+        // Safe: offset >= lineStart (lineStart is the start of the line containing offset).
+        let displacement: Text.Offset = try! offset - lineStart
+        return displacement.vector.rawValue + 1
     }
 
     /// Returns the byte offset of the start of the given 1-based line number.

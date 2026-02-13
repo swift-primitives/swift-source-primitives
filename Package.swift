@@ -39,6 +39,14 @@ let package = Package(
             ],
             path: "Tests/Support"
         ),
+        .testTarget(
+            name: "Source Primitives Tests",
+            dependencies: [
+                "Source Primitives",
+                "Source Primitives Test Support",
+            ],
+            path: "Tests/Sources/Source Primitives Tests"
+        ),
     ],
     swiftLanguageModes: [.v6]
 )

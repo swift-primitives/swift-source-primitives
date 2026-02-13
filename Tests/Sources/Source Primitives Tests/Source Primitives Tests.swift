@@ -74,17 +74,17 @@ struct FileTests {
 struct LocationTests {
     @Test("stores file and offset")
     func storesFileAndOffset() {
-        let loc = Source.Location(file: Source.File.ID(0), offset: Text.Position(42))
+        let loc = Source.Location(file: Source.File.ID(0), offset: 42)
         #expect(loc.file == Source.File.ID(0))
-        #expect(loc.offset == Text.Position(42))
+        #expect(loc.offset == 42)
     }
 
     @Test("equatable")
     func equatable() {
-        let a = Source.Location(file: Source.File.ID(0), offset: Text.Position(10))
-        let b = Source.Location(file: Source.File.ID(0), offset: Text.Position(10))
-        let c = Source.Location(file: Source.File.ID(0), offset: Text.Position(20))
-        let d = Source.Location(file: Source.File.ID(1), offset: Text.Position(10))
+        let a = Source.Location(file: Source.File.ID(0), offset: 10)
+        let b = Source.Location(file: Source.File.ID(0), offset: 10)
+        let c = Source.Location(file: Source.File.ID(0), offset: 20)
+        let d = Source.Location(file: Source.File.ID(1), offset: 10)
         #expect(a == b)
         #expect(a != c)
         #expect(a != d)
@@ -92,8 +92,8 @@ struct LocationTests {
 
     @Test("hashable")
     func hashable() {
-        let a = Source.Location(file: Source.File.ID(0), offset: Text.Position(10))
-        let b = Source.Location(file: Source.File.ID(0), offset: Text.Position(10))
+        let a = Source.Location(file: Source.File.ID(0), offset: 10)
+        let b = Source.Location(file: Source.File.ID(0), offset: 10)
         var set: Set<Source.Location> = [a, b]
         #expect(set.count == 1)
     }
@@ -109,12 +109,12 @@ struct ResolvedLocationTests {
             file: Source.File.ID(0),
             line: 5,
             column: 12,
-            offset: Text.Position(100)
+            offset: 100
         )
         #expect(resolved.file == Source.File.ID(0))
         #expect(resolved.line == 5)
         #expect(resolved.column == 12)
-        #expect(resolved.offset == Text.Position(100))
+        #expect(resolved.offset == 100)
     }
 
     @Test("description")
@@ -123,7 +123,7 @@ struct ResolvedLocationTests {
             file: Source.File.ID(2),
             line: 10,
             column: 5,
-            offset: Text.Position(200)
+            offset: 200
         )
         #expect(resolved.description == "file(2):10:5")
     }
@@ -135,87 +135,55 @@ struct ResolvedLocationTests {
 struct RangeTests {
     @Test("init from start and end")
     func initStartEnd() {
-        let range = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            end: Text.Position(20)
-        )
+        let range = Source.Range(file: Source.File.ID(0), start: 10, end: 20)
         #expect(range.file == Source.File.ID(0))
-        #expect(range.start == Text.Position(10))
-        #expect(range.end == Text.Position(20))
+        #expect(range.start == 10)
+        #expect(range.end == 20)
     }
 
     @Test("init from start and count")
     func initStartCount() {
-        let range = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            count: Text.Count(15)
-        )
-        #expect(range.end == Text.Position(25))
+        let range = Source.Range(file: Source.File.ID(0), start: 10, count: 15)
+        #expect(range.end == 25)
     }
 
     @Test("count")
     func count() {
-        let range = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            end: Text.Position(25)
-        )
+        let range = Source.Range(file: Source.File.ID(0), start: 10, end: 25)
         #expect(range.count == 15)
     }
 
     @Test("isEmpty")
     func isEmpty() {
-        let empty = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            end: Text.Position(10)
-        )
-        let nonEmpty = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            end: Text.Position(11)
-        )
+        let empty = Source.Range(file: Source.File.ID(0), start: 10, end: 10)
+        let nonEmpty = Source.Range(file: Source.File.ID(0), start: 10, end: 11)
         #expect(empty.isEmpty)
         #expect(!nonEmpty.isEmpty)
     }
 
     @Test("contains")
     func contains() {
-        let range = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            end: Text.Position(20)
-        )
-        #expect(range.contains(Text.Position(10)))
-        #expect(range.contains(Text.Position(15)))
-        #expect(!range.contains(Text.Position(20)))
-        #expect(!range.contains(Text.Position(9)))
+        let range = Source.Range(file: Source.File.ID(0), start: 10, end: 20)
+        #expect(range.contains(10))
+        #expect(range.contains(15))
+        #expect(!range.contains(20))
+        #expect(!range.contains(9))
     }
 
     @Test("textRange")
     func textRange() {
-        let range = Source.Range(
-            file: Source.File.ID(0),
-            start: Text.Position(10),
-            end: Text.Position(20)
-        )
+        let range = Source.Range(file: Source.File.ID(0), start: 10, end: 20)
         let tr = range.textRange
-        #expect(tr.start == Text.Position(10))
-        #expect(tr.end == Text.Position(20))
+        #expect(tr.start == 10)
+        #expect(tr.end == 20)
     }
 
     @Test("startLocation and endLocation")
     func locationAccessors() {
-        let range = Source.Range(
-            file: Source.File.ID(3),
-            start: Text.Position(10),
-            end: Text.Position(20)
-        )
+        let range = Source.Range(file: Source.File.ID(3), start: 10, end: 20)
         #expect(range.startLocation.file == Source.File.ID(3))
-        #expect(range.startLocation.offset == Text.Position(10))
-        #expect(range.endLocation.offset == Text.Position(20))
+        #expect(range.startLocation.offset == 10)
+        #expect(range.endLocation.offset == 20)
     }
 }
 
@@ -234,8 +202,8 @@ struct LineMapTests {
         let content: [UInt8] = Array("hello".utf8)
         let map = Source.Manager.LineMap(scanning: content)
         #expect(map.lineCount == 1)
-        #expect(map.line(containing: Text.Position(0)) == 1)
-        #expect(map.line(containing: Text.Position(4)) == 1)
+        #expect(map.line(containing: .zero) == 1)
+        #expect(map.line(containing: 4) == 1)
     }
 
     @Test("LF line endings")
@@ -244,10 +212,10 @@ struct LineMapTests {
         let content: [UInt8] = Array("line1\nline2\nline3".utf8)
         let map = Source.Manager.LineMap(scanning: content)
         #expect(map.lineCount == 3)
-        #expect(map.line(containing: Text.Position(0)) == 1)
-        #expect(map.line(containing: Text.Position(5)) == 1)
-        #expect(map.line(containing: Text.Position(6)) == 2)
-        #expect(map.line(containing: Text.Position(12)) == 3)
+        #expect(map.line(containing: .zero) == 1)
+        #expect(map.line(containing: 5) == 1)
+        #expect(map.line(containing: 6) == 2)
+        #expect(map.line(containing: 12) == 3)
     }
 
     @Test("CR line endings")
@@ -256,9 +224,9 @@ struct LineMapTests {
         let content: [UInt8] = [0x61, 0x0D, 0x62, 0x0D, 0x63]
         let map = Source.Manager.LineMap(scanning: content)
         #expect(map.lineCount == 3)
-        #expect(map.line(containing: Text.Position(0)) == 1)
-        #expect(map.line(containing: Text.Position(2)) == 2)
-        #expect(map.line(containing: Text.Position(4)) == 3)
+        #expect(map.line(containing: .zero) == 1)
+        #expect(map.line(containing: 2) == 2)
+        #expect(map.line(containing: 4) == 3)
     }
 
     @Test("CRLF line endings")
@@ -267,9 +235,9 @@ struct LineMapTests {
         let content: [UInt8] = [0x61, 0x0D, 0x0A, 0x62, 0x0D, 0x0A, 0x63]
         let map = Source.Manager.LineMap(scanning: content)
         #expect(map.lineCount == 3)
-        #expect(map.line(containing: Text.Position(0)) == 1)
-        #expect(map.line(containing: Text.Position(3)) == 2)
-        #expect(map.line(containing: Text.Position(6)) == 3)
+        #expect(map.line(containing: .zero) == 1)
+        #expect(map.line(containing: 3) == 2)
+        #expect(map.line(containing: 6) == 3)
     }
 
     @Test("mixed line endings")
@@ -278,10 +246,10 @@ struct LineMapTests {
         let content: [UInt8] = [0x61, 0x0A, 0x62, 0x0D, 0x63, 0x0D, 0x0A, 0x64]
         let map = Source.Manager.LineMap(scanning: content)
         #expect(map.lineCount == 4)
-        #expect(map.line(containing: Text.Position(0)) == 1)
-        #expect(map.line(containing: Text.Position(2)) == 2)
-        #expect(map.line(containing: Text.Position(4)) == 3)
-        #expect(map.line(containing: Text.Position(7)) == 4)
+        #expect(map.line(containing: .zero) == 1)
+        #expect(map.line(containing: 2) == 2)
+        #expect(map.line(containing: 4) == 3)
+        #expect(map.line(containing: 7) == 4)
     }
 
     @Test("column computation")
@@ -289,10 +257,10 @@ struct LineMapTests {
         // "hello\nworld"
         let content: [UInt8] = Array("hello\nworld".utf8)
         let map = Source.Manager.LineMap(scanning: content)
-        #expect(map.column(for: Text.Position(0)) == 1)
-        #expect(map.column(for: Text.Position(4)) == 5)
-        #expect(map.column(for: Text.Position(6)) == 1)
-        #expect(map.column(for: Text.Position(8)) == 3)
+        #expect(map.column(for: .zero) == 1)
+        #expect(map.column(for: 4) == 5)
+        #expect(map.column(for: 6) == 1)
+        #expect(map.column(for: 8) == 3)
     }
 
     @Test("offset for line")
@@ -300,9 +268,9 @@ struct LineMapTests {
         // "aaa\nbbb\nccc"
         let content: [UInt8] = Array("aaa\nbbb\nccc".utf8)
         let map = Source.Manager.LineMap(scanning: content)
-        #expect(map.offset(forLine: 1) == Text.Position(0))
-        #expect(map.offset(forLine: 2) == Text.Position(4))
-        #expect(map.offset(forLine: 3) == Text.Position(8))
+        #expect(map.offset(forLine: 1) == .zero)
+        #expect(map.offset(forLine: 2) == 4)
+        #expect(map.offset(forLine: 3) == 8)
         #expect(map.offset(forLine: 0) == nil)
         #expect(map.offset(forLine: 4) == nil)
     }
@@ -313,8 +281,8 @@ struct LineMapTests {
         let content: [UInt8] = Array("hello\n".utf8)
         let map = Source.Manager.LineMap(scanning: content)
         #expect(map.lineCount == 2)
-        #expect(map.line(containing: Text.Position(0)) == 1)
-        #expect(map.line(containing: Text.Position(6)) == 2)
+        #expect(map.line(containing: .zero) == 1)
+        #expect(map.line(containing: 6) == 2)
     }
 }
 
@@ -356,17 +324,17 @@ struct ManagerTests {
         let content: [UInt8] = Array("func foo() {\n    return\n}".utf8)
         let id = manager.register(path: "test.swift", content: content)
 
-        let loc1 = Source.Location(file: id, offset: Text.Position(0))
+        let loc1 = Source.Location(file: id, offset: .zero)
         let resolved1 = manager.resolve(loc1)
         #expect(resolved1.line == 1)
         #expect(resolved1.column == 1)
 
-        let loc2 = Source.Location(file: id, offset: Text.Position(17))
+        let loc2 = Source.Location(file: id, offset: 17)
         let resolved2 = manager.resolve(loc2)
         #expect(resolved2.line == 2)
         #expect(resolved2.column == 5)
 
-        let loc3 = Source.Location(file: id, offset: Text.Position(24))
+        let loc3 = Source.Location(file: id, offset: 24)
         let resolved3 = manager.resolve(loc3)
         #expect(resolved3.line == 3)
         #expect(resolved3.column == 1)

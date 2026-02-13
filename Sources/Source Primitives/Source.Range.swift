@@ -45,7 +45,8 @@ extension Source {
         public init(file: Source.File.ID, start: Text.Position, count: Text.Count) {
             self.file = file
             self.start = start
-            self.end = start + count
+            // Safe: adding a non-negative cardinal to a position cannot underflow.
+            self.end = try! start + Text.Offset(count)
         }
     }
 }
@@ -56,7 +57,8 @@ extension Source.Range {
     /// The number of bytes in this range.
     @inlinable
     public var count: Text.Count {
-        Text.Count(start.distance(to: end))
+        // Safe: start <= end invariant guarantees non-negative, representable result.
+        Text.Count(__unchecked: (), try! end - start)
     }
 
     /// Whether this range contains zero bytes.
