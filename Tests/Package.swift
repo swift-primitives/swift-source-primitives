@@ -14,18 +14,12 @@ let package = Package(
     dependencies: [
         // Parent package
         .package(path: "../"),
-        // Testing framework
-        .package(path: "../../../swift-foundations/swift-testing"),
-        // Test primitives (for test utilities)
-        .package(path: "../../swift-test-primitives"),
     ],
     targets: [
         .testTarget(
             name: "Source Primitives Tests",
             dependencies: [
-                .product(name: "Source Primitives", package: "swift-source-primitives"),
-                .product(name: "Testing", package: "swift-testing"),
-                .product(name: "Test Primitives", package: "swift-test-primitives"),
+                .product(name: "Source Primitives Test Support", package: "swift-source-primitives"),
             ],
             path: "Sources/Source Primitives Tests"
         ),

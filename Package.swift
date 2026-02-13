@@ -15,7 +15,11 @@ let package = Package(
         .library(
             name: "Source Primitives",
             targets: ["Source Primitives"]
-        )
+        ),
+        .library(
+            name: "Source Primitives Test Support",
+            targets: ["Source Primitives Test Support"]
+        ),
     ],
     dependencies: [
         .package(path: "../swift-text-primitives")
@@ -26,7 +30,15 @@ let package = Package(
             dependencies: [
                 .product(name: "Text Primitives", package: "swift-text-primitives")
             ]
-        )
+        ),
+        .target(
+            name: "Source Primitives Test Support",
+            dependencies: [
+                "Source Primitives",
+                .product(name: "Text Primitives Test Support", package: "swift-text-primitives"),
+            ],
+            path: "Tests/Support"
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
