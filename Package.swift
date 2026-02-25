@@ -45,7 +45,7 @@ let package = Package(
                 "Source Primitives",
                 "Source Primitives Test Support",
             ],
-            path: "Tests/Sources/Source Primitives Tests"
+            path: "Tests/Source Primitives Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
@@ -57,6 +57,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
         .enableExperimentalFeature("SuppressedAssociatedTypes"),
         .enableExperimentalFeature("SuppressedAssociatedTypesWithDefaults"),
