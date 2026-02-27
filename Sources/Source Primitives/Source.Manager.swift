@@ -41,7 +41,7 @@ extension Source {
         internal var contents: [[UInt8]]
 
         @usableFromInline
-        internal var lineMaps: [Manager.LineMap?]
+        internal var lineMaps: [Text.Line.Map?]
 
         /// Creates an empty source manager.
         @inlinable
@@ -59,17 +59,19 @@ extension Source.Manager {
     /// Registers a source file with its content.
     ///
     /// - Parameters:
-    ///   - path: The file path (for display in diagnostics).
+    ///   - fileID: The `#fileID`-style module/file identifier.
+    ///   - filePath: The file system path (for display in diagnostics).
     ///   - content: The UTF-8 bytes of the file.
     /// - Returns: The assigned ``Source/File/ID``.
     @inlinable
     @discardableResult
     public mutating func register(
-        path: Swift.String,
+        fileID: Swift.String,
+        filePath: Swift.String,
         content: [UInt8]
     ) -> Source.File.ID {
         let id = Source.File.ID(files.count)
-        let file = Source.File(id: id, path: path)
+        let file = Source.File(id: id, fileID: fileID, filePath: filePath)
         files.append(file)
         contents.append(content)
         lineMaps.append(nil)
@@ -88,7 +90,7 @@ extension Source.Manager {
 
     /// Returns the file metadata for the given ID.
     ///
-    /// - Parameter id: A file ID previously returned by ``register(path:content:)``.
+    /// - Parameter id: A file ID previously returned by ``register(fileID:filePath:content:)``.
     /// - Returns: The file metadata.
     @inlinable
     public func file(for id: Source.File.ID) -> Source.File {
@@ -97,7 +99,7 @@ extension Source.Manager {
 
     /// Returns the content bytes for the given file ID.
     ///
-    /// - Parameter id: A file ID previously returned by ``register(path:content:)``.
+    /// - Parameter id: A file ID previously returned by ``register(fileID:filePath:content:)``.
     /// - Returns: The UTF-8 content bytes.
     @inlinable
     public func content(for id: Source.File.ID) -> [UInt8] {
@@ -113,33 +115,33 @@ extension Source.Manager {
     /// - Parameter id: A file ID.
     /// - Returns: The line map for that file.
     @inlinable
-    public mutating func lineMap(for id: Source.File.ID) -> Source.Manager.LineMap {
+    public mutating func lineMap(for id: Source.File.ID) -> Text.Line.Map {
         if let existing = lineMaps[id.rawValue] {
             return existing
         }
-        let map = Source.Manager.LineMap(scanning: contents[id.rawValue])
+        let map = Text.Line.Map(scanning: contents[id.rawValue])
         lineMaps[id.rawValue] = map
         return map
     }
 
-    /// Resolves a ``Source/Location`` to a ``Source/Location/Resolved`` with line and column.
+    /// Resolves a ``Source/Position`` to a ``Source/Location`` with line, column,
+    /// and file identity strings.
     ///
     /// Computes the line map lazily on first call per file.
     ///
-    /// - Parameter location: A compact source location (file + offset).
-    /// - Returns: The resolved location with 1-based line and column numbers.
+    /// - Parameter position: A compact source position (file + offset).
+    /// - Returns: A self-contained location with file identity and line:column.
     @inlinable
-    public mutating func resolve(
-        _ location: Source.Location
-    ) -> Source.Location.Resolved {
-        let map = lineMap(for: location.file)
-        let line = map.line(containing: location.offset)
-        let column = map.column(for: location.offset)
-        return Source.Location.Resolved(
-            file: location.file,
-            line: line,
-            column: column,
-            offset: location.offset
+    public mutating func location(
+        for position: Source.Position
+    ) -> Source.Location {
+        let file = file(for: position.file)
+        let map = lineMap(for: position.file)
+        let textLocation = map.location(for: position.offset)
+        return Source.Location(
+            fileID: file.fileID,
+            filePath: file.filePath,
+            position: textLocation
         )
     }
 }

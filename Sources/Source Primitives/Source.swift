@@ -17,11 +17,10 @@
 ///
 /// ## Types
 ///
-/// - ``Source/File``: Metadata for a source file (ID + path).
+/// - ``Source/File``: Metadata for a source file (ID + fileID + filePath).
 /// - ``Source/File/ID``: Opaque handle identifying a file within a ``Source/Manager``.
-/// - ``Source/Location``: A file-qualified byte offset.
-/// - ``Source/Location/Resolved``: A file-qualified line:column position.
+/// - ``Source/Position``: A file-qualified byte offset (compact, machine-oriented).
+/// - ``Source/Location``: A self-contained file + line:column (display-oriented).
 /// - ``Source/Range``: A file-qualified half-open byte range.
 /// - ``Source/Manager``: Central registry of source files, content, and line maps.
-/// - ``Source/Manager/LineMap``: Sorted array of line-start offsets for O(log L) line resolution.
 public enum Source {}

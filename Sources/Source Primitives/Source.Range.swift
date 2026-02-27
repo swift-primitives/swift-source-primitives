@@ -79,16 +79,16 @@ extension Source.Range {
         Text.Range(start: start, end: end)
     }
 
-    /// Creates a ``Source/Location`` at the start of this range.
+    /// Creates a ``Source/Position`` at the start of this range.
     @inlinable
-    public var startLocation: Source.Location {
-        Source.Location(file: file, offset: start)
+    public var startPosition: Source.Position {
+        Source.Position(file: file, offset: start)
     }
 
-    /// Creates a ``Source/Location`` at the end of this range.
+    /// Creates a ``Source/Position`` at the end of this range.
     @inlinable
-    public var endLocation: Source.Location {
-        Source.Location(file: file, offset: end)
+    public var endPosition: Source.Position {
+        Source.Position(file: file, offset: end)
     }
 }
 

@@ -21,13 +21,17 @@ extension Source {
         /// The unique identifier for this file within a ``Source/Manager``.
         public let id: File.ID
 
-        /// The file path as provided during registration.
-        public let path: Swift.String
+        /// The `#fileID`-style module/file identifier (e.g., `"MyModule/File.swift"`).
+        public let fileID: Swift.String
+
+        /// The file system path as provided during registration.
+        public let filePath: Swift.String
 
         @inlinable
-        internal init(id: File.ID, path: Swift.String) {
+        internal init(id: File.ID, fileID: Swift.String, filePath: Swift.String) {
             self.id = id
-            self.path = path
+            self.fileID = fileID
+            self.filePath = filePath
         }
     }
 }
