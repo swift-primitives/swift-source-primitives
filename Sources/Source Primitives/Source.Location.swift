@@ -93,7 +93,7 @@ extension Source.Location {
     /// The 1-based column number.
     @inlinable
     public var column: Int {
-        Int(bitPattern: position.column.rawValue.rawValue)
+        Int(bitPattern: position.column)
     }
 }
 
