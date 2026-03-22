@@ -9,4 +9,4 @@
 //
 // ===----------------------------------------------------------------------===//
 
-public import Source_Primitives
+internal import Source_Primitives
