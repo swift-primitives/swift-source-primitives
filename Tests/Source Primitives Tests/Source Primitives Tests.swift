@@ -17,8 +17,8 @@ import Source_Primitives_Test_Support
 
 @Suite("Source.File.ID")
 struct FileIDTests {
-    @Test("equatable")
-    func equatable() {
+    @Test
+    func `equatable`() {
         let a = Source.File.ID(0)
         let b = Source.File.ID(0)
         let c = Source.File.ID(1)
@@ -26,23 +26,23 @@ struct FileIDTests {
         #expect(a != c)
     }
 
-    @Test("comparable")
-    func comparable() {
+    @Test
+    func `comparable`() {
         let a = Source.File.ID(0)
         let b = Source.File.ID(1)
         #expect(a < b)
     }
 
-    @Test("hashable")
-    func hashable() {
+    @Test
+    func `hashable`() {
         var set: Set<Source.File.ID> = [Source.File.ID(0), Source.File.ID(0)]
         #expect(set.count == 1)
         set.insert(Source.File.ID(1))
         #expect(set.count == 2)
     }
 
-    @Test("description")
-    func description() {
+    @Test
+    func `description`() {
         #expect(Source.File.ID(3).description == "file(3)")
     }
 }
@@ -51,8 +51,8 @@ struct FileIDTests {
 
 @Suite("Source.File")
 struct FileTests {
-    @Test("stores id, fileID, and filePath")
-    func storesFields() {
+    @Test
+    func `stores id, fileID, and filePath`() {
         let file = Source.File(
             id: Source.File.ID(0),
             fileID: "MyModule/main.swift",
@@ -63,8 +63,8 @@ struct FileTests {
         #expect(file.filePath == "/path/to/main.swift")
     }
 
-    @Test("equatable")
-    func equatable() {
+    @Test
+    func `equatable`() {
         let a = Source.File(id: Source.File.ID(0), fileID: "M/a.swift", filePath: "a.swift")
         let b = Source.File(id: Source.File.ID(0), fileID: "M/a.swift", filePath: "a.swift")
         let c = Source.File(id: Source.File.ID(1), fileID: "M/b.swift", filePath: "b.swift")
@@ -77,15 +77,15 @@ struct FileTests {
 
 @Suite("Source.Position")
 struct PositionTests {
-    @Test("stores file and offset")
-    func storesFileAndOffset() {
+    @Test
+    func `stores file and offset`() {
         let pos = Source.Position(file: Source.File.ID(0), offset: 42)
         #expect(pos.file == Source.File.ID(0))
         #expect(pos.offset == 42)
     }
 
-    @Test("equatable")
-    func equatable() {
+    @Test
+    func `equatable`() {
         let a = Source.Position(file: Source.File.ID(0), offset: 10)
         let b = Source.Position(file: Source.File.ID(0), offset: 10)
         let c = Source.Position(file: Source.File.ID(0), offset: 20)
@@ -95,16 +95,16 @@ struct PositionTests {
         #expect(a != d)
     }
 
-    @Test("hashable")
-    func hashable() {
+    @Test
+    func `hashable`() {
         let a = Source.Position(file: Source.File.ID(0), offset: 10)
         let b = Source.Position(file: Source.File.ID(0), offset: 10)
         let set: Set<Source.Position> = [a, b]
         #expect(set.count == 1)
     }
 
-    @Test("description")
-    func description() {
+    @Test
+    func `description`() {
         let pos = Source.Position(file: Source.File.ID(2), offset: 42)
         #expect(pos.description == "file(2):42")
     }
@@ -114,8 +114,8 @@ struct PositionTests {
 
 @Suite("Source.Location")
 struct LocationTests {
-    @Test("memberwise init")
-    func memberwiseInit() {
+    @Test
+    func `memberwise init`() {
         let location = Source.Location(
             fileID: "MyModule/File.swift",
             filePath: "/path/File.swift",
@@ -129,8 +129,8 @@ struct LocationTests {
         #expect(location.position.line == 10)
     }
 
-    @Test("convenience init with Int line/column")
-    func convenienceInit() {
+    @Test
+    func `convenience init with Int line/column`() {
         let location = Source.Location(
             fileID: "MyModule/File.swift",
             line: 10,
@@ -141,8 +141,8 @@ struct LocationTests {
         #expect(location.filePath == nil)
     }
 
-    @Test("line and column accessors")
-    func lineColumnAccessors() {
+    @Test
+    func `line and column accessors`() {
         let location = Source.Location(
             fileID: "M/F.swift",
             line: 42,
@@ -152,8 +152,8 @@ struct LocationTests {
         #expect(location.column == 17)
     }
 
-    @Test("description")
-    func description() {
+    @Test
+    func `description`() {
         let location = Source.Location(
             fileID: "MyModule/File.swift",
             line: 10,
@@ -162,29 +162,29 @@ struct LocationTests {
         #expect(location.description == "MyModule/File.swift:10:5")
     }
 
-    @Test("comparable — different files")
-    func comparableDifferentFiles() {
+    @Test
+    func `comparable — different files`() {
         let a = Source.Location(fileID: "A/a.swift", line: 100, column: 1)
         let b = Source.Location(fileID: "B/b.swift", line: 1, column: 1)
         #expect(a < b)
     }
 
-    @Test("comparable — same file, different lines")
-    func comparableSameFileDifferentLines() {
+    @Test
+    func `comparable — same file, different lines`() {
         let a = Source.Location(fileID: "M/F.swift", line: 1, column: 99)
         let b = Source.Location(fileID: "M/F.swift", line: 2, column: 1)
         #expect(a < b)
     }
 
-    @Test("comparable — same file and line, different columns")
-    func comparableSameLineColumns() {
+    @Test
+    func `comparable — same file and line, different columns`() {
         let a = Source.Location(fileID: "M/F.swift", line: 5, column: 1)
         let b = Source.Location(fileID: "M/F.swift", line: 5, column: 10)
         #expect(a < b)
     }
 
-    @Test("equatable")
-    func equatable() {
+    @Test
+    func `equatable`() {
         let a = Source.Location(fileID: "M/F.swift", line: 5, column: 10)
         let b = Source.Location(fileID: "M/F.swift", line: 5, column: 10)
         let c = Source.Location(fileID: "M/F.swift", line: 5, column: 11)
@@ -192,8 +192,8 @@ struct LocationTests {
         #expect(a != c)
     }
 
-    @Test("hashable")
-    func hashable() {
+    @Test
+    func `hashable`() {
         let a = Source.Location(fileID: "M/F.swift", line: 5, column: 10)
         let b = Source.Location(fileID: "M/F.swift", line: 5, column: 10)
         let set: Set<Source.Location> = [a, b]
@@ -205,36 +205,36 @@ struct LocationTests {
 
 @Suite("Source.Range")
 struct RangeTests {
-    @Test("init from start and end")
-    func initStartEnd() {
+    @Test
+    func `init from start and end`() {
         let range = Source.Range(file: Source.File.ID(0), start: 10, end: 20)
         #expect(range.file == Source.File.ID(0))
         #expect(range.start == 10)
         #expect(range.end == 20)
     }
 
-    @Test("init from start and count")
-    func initStartCount() {
+    @Test
+    func `init from start and count`() {
         let range = Source.Range(file: Source.File.ID(0), start: 10, count: 15)
         #expect(range.end == 25)
     }
 
-    @Test("count")
-    func count() {
+    @Test
+    func `count`() {
         let range = Source.Range(file: Source.File.ID(0), start: 10, end: 25)
         #expect(range.count == 15)
     }
 
-    @Test("isEmpty")
-    func isEmpty() {
+    @Test
+    func `isEmpty`() {
         let empty = Source.Range(file: Source.File.ID(0), start: 10, end: 10)
         let nonEmpty = Source.Range(file: Source.File.ID(0), start: 10, end: 11)
         #expect(empty.isEmpty)
         #expect(!nonEmpty.isEmpty)
     }
 
-    @Test("contains")
-    func contains() {
+    @Test
+    func `contains`() {
         let range = Source.Range(file: Source.File.ID(0), start: 10, end: 20)
         #expect(range.contains(10))
         #expect(range.contains(15))
@@ -242,16 +242,16 @@ struct RangeTests {
         #expect(!range.contains(9))
     }
 
-    @Test("textRange")
-    func textRange() {
+    @Test
+    func `textRange`() {
         let range = Source.Range(file: Source.File.ID(0), start: 10, end: 20)
         let tr = range.textRange
         #expect(tr.start == 10)
         #expect(tr.end == 20)
     }
 
-    @Test("startPosition and endPosition")
-    func positionAccessors() {
+    @Test
+    func `startPosition and endPosition`() {
         let range = Source.Range(file: Source.File.ID(3), start: 10, end: 20)
         #expect(range.startPosition.file == Source.File.ID(3))
         #expect(range.startPosition.offset == 10)
@@ -263,14 +263,14 @@ struct RangeTests {
 
 @Suite("Source.Manager")
 struct ManagerTests {
-    @Test("empty manager")
-    func emptyManager() {
+    @Test
+    func `empty manager`() {
         let manager = Source.Manager()
         #expect(manager.fileCount == 0)
     }
 
-    @Test("register file")
-    func registerFile() {
+    @Test
+    func `register file`() {
         var manager = Source.Manager()
         let content: [UInt8] = Array("let x = 1".utf8)
         let id = manager.register(
@@ -284,8 +284,8 @@ struct ManagerTests {
         #expect(manager.content(for: id) == content)
     }
 
-    @Test("sequential IDs")
-    func sequentialIDs() {
+    @Test
+    func `sequential IDs`() {
         var manager = Source.Manager()
         let id0 = manager.register(fileID: "M/a.swift", filePath: "a.swift", content: [])
         let id1 = manager.register(fileID: "M/b.swift", filePath: "b.swift", content: [])
@@ -295,8 +295,8 @@ struct ManagerTests {
         #expect(manager.fileCount == 3)
     }
 
-    @Test("location resolution")
-    func locationResolution() {
+    @Test
+    func `location resolution`() {
         var manager = Source.Manager()
         // "func foo() {\n    return\n}"
         let content: [UInt8] = Array("func foo() {\n    return\n}".utf8)
@@ -323,8 +323,8 @@ struct ManagerTests {
         #expect(loc3.column == 1)
     }
 
-    @Test("lazy line map computation")
-    func lazyLineMap() {
+    @Test
+    func `lazy line map computation`() {
         var manager = Source.Manager()
         let content: [UInt8] = Array("a\nb\nc".utf8)
         let id = manager.register(fileID: "M/test.swift", filePath: "test.swift", content: content)
@@ -336,8 +336,8 @@ struct ManagerTests {
         #expect(map2.lineCount == 3)
     }
 
-    @Test("multiple files with independent line maps")
-    func multipleFiles() {
+    @Test
+    func `multiple files with independent line maps`() {
         var manager = Source.Manager()
         let id0 = manager.register(
             fileID: "M/a.swift",
